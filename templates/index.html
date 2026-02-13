@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter Sentiment Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Twitter Sentiment Analyzer</h1>
+            <p>Analyze the sentiment of tweets in real-time</p>
+        </header>
+        
+        <main>
+            <div class="card">
+                <form id="tweetForm">
+                    <div class="input-group">
+                        <label for="tweetInput">Enter your tweet:</label>
+                        <textarea 
+                            id="tweetInput" 
+                            placeholder="Type your tweet here..." 
+                            maxlength="280"
+                            rows="5"
+                        ></textarea>
+                        <div class="char-counter">
+                            <span id="currentCharCount">0</span>/<span id="maxCharCount">280</span>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" id="predictBtn" class="btn-primary">
+                        <span id="btnText">Analyze Sentiment</span>
+                        <div id="loadingSpinner" class="spinner" style="display: none;"></div>
+                    </button>
+                </form>
+                
+                <div id="resultContainer" class="result-container" style="display: none;">
+                    <div id="resultContent" class="result-content">
+                        <div id="sentimentIcon"></div>
+                        <h2 id="resultTitle">Result</h2>
+                        <p id="resultMessage"></p>
+                        <div id="confidenceBarContainer" class="confidence-bar-container">
+                            <div class="confidence-labels">
+                                <span>Negative</span>
+                                <span id="confidenceValue">0%</span>
+                                <span>Positive</span>
+                            </div>
+                            <div class="confidence-bar">
+                                <div id="confidenceFill" class="confidence-fill"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <p>Made with ❤️ for analyzing Twitter sentiments</p>
+        </footer>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
