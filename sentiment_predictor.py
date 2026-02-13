@@ -19,35 +19,35 @@ class SentimentPredictor:
             # Try to load with joblib first (more robust for sklearn models)
             self.model = joblib.load(Config.MODEL_PATH)
             print("Model loaded successfully with joblib")
-        except:
-            # Fallback to pickle
-            try:
-                with open(Config.MODEL_PATH, 'rb') as model_file:
-                    self.model = pickle.load(model_file, encoding='latin1')  # Added encoding for compatibility
-                print("Model loaded successfully with pickle")
-            except FileNotFoundError:
-                print(f"Model file not found at {Config.MODEL_PATH}")
+        except ModuleNotFoundError as e:
+            if "numpy._core" in str(e):
+                print(f"Model compatibility issue detected: {str(e)}")
+                print("Your model was trained with a different numpy version.")
+                print("Please follow the instructions in model_setup_guide.py to recreate your model with the current environment.")
+                print("Run 'python model_setup_guide.py' for detailed instructions.")
+                raise  # Re-raise to stop the application since the model is incompatible
+            else:
                 raise
-            except Exception as e:
-                print(f"Error loading model: {str(e)}")
-                raise  # Re-raise the exception to stop the application if model fails to load
+        except Exception as e:
+            print(f"Unexpected error loading model: {str(e)}")
+            raise  # Re-raise the exception to stop the application if model fails to load
         
         try:
             # Try to load with joblib first (more robust for sklearn models)
             self.vectorizer = joblib.load(Config.VECTORIZER_PATH)
             print("Vectorizer loaded successfully with joblib")
-        except:
-            # Fallback to pickle
-            try:
-                with open(Config.VECTORIZER_PATH, 'rb') as vectorizer_file:
-                    self.vectorizer = pickle.load(vectorizer_file, encoding='latin1')  # Added encoding for compatibility
-                print("Vectorizer loaded successfully with pickle")
-            except FileNotFoundError:
-                print(f"Vectorizer file not found at {Config.VECTORIZER_PATH}")
+        except ModuleNotFoundError as e:
+            if "numpy._core" in str(e):
+                print(f"Vectorizer compatibility issue detected: {str(e)}")
+                print("Your vectorizer was trained with a different numpy version.")
+                print("Please follow the instructions in model_setup_guide.py to recreate your vectorizer with the current environment.")
+                print("Run 'python model_setup_guide.py' for detailed instructions.")
+                raise  # Re-raise to stop the application since the vectorizer is incompatible
+            else:
                 raise
-            except Exception as e:
-                print(f"Error loading vectorizer: {str(e)}")
-                raise  # Re-raise the exception to stop the application if vectorizer fails to load
+        except Exception as e:
+            print(f"Unexpected error loading vectorizer: {str(e)}")
+            raise  # Re-raise the exception to stop the application if vectorizer fails to load
     
     def normalize_text(self, content):
         """
