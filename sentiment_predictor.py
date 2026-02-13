@@ -84,7 +84,17 @@ class SentimentPredictor:
         normalized_text = self.normalize_text(text)
         
         # Transform the text using the vectorizer
-        text_vector = self.vectorizer.transform([normalized_text])
+        # Handle potential issue with unfitted vectorizer
+        try:
+            text_vector = self.vectorizer.transform([normalized_text])
+        except ValueError as e:
+            if "VocabularyException" in str(e) or "not fitted" in str(e).lower():
+                # This might happen if the vectorizer vocabulary is not properly saved
+                # Try fitting on the input or handling differently
+                # For now, we'll return an error message
+                raise ValueError(f"Vectorizer not properly fitted: {str(e)}. Please retrain your vectorizer and save it properly using joblib.")
+            else:
+                raise
         
         # Make prediction
         prediction = self.model.predict(text_vector)[0]
