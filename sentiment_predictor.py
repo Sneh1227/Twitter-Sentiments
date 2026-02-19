@@ -16,38 +16,20 @@ class SentimentPredictor:
     def load_models(self):
         """Load the trained model and vectorizer from disk"""
         try:
-            # Try to load with joblib first (more robust for sklearn models)
+            # Load the model
             self.model = joblib.load(Config.MODEL_PATH)
             print("Model loaded successfully with joblib")
-        except ModuleNotFoundError as e:
-            if "numpy._core" in str(e):
-                print(f"Model compatibility issue detected: {str(e)}")
-                print("Your model was trained with a different numpy version.")
-                print("Please follow the instructions in model_setup_guide.py to recreate your model with the current environment.")
-                print("Run 'python model_setup_guide.py' for detailed instructions.")
-                raise  # Re-raise to stop the application since the model is incompatible
-            else:
-                raise
         except Exception as e:
-            print(f"Unexpected error loading model: {str(e)}")
-            raise  # Re-raise the exception to stop the application if model fails to load
+            print(f"Error loading model: {str(e)}")
+            raise
         
         try:
-            # Try to load with joblib first (more robust for sklearn models)
+            # Load the vectorizer
             self.vectorizer = joblib.load(Config.VECTORIZER_PATH)
             print("Vectorizer loaded successfully with joblib")
-        except ModuleNotFoundError as e:
-            if "numpy._core" in str(e):
-                print(f"Vectorizer compatibility issue detected: {str(e)}")
-                print("Your vectorizer was trained with a different numpy version.")
-                print("Please follow the instructions in model_setup_guide.py to recreate your vectorizer with the current environment.")
-                print("Run 'python model_setup_guide.py' for detailed instructions.")
-                raise  # Re-raise to stop the application since the vectorizer is incompatible
-            else:
-                raise
         except Exception as e:
-            print(f"Unexpected error loading vectorizer: {str(e)}")
-            raise  # Re-raise the exception to stop the application if vectorizer fails to load
+            print(f"Error loading vectorizer: {str(e)}")
+            raise
     
     def normalize_text(self, content):
         """
