@@ -11,9 +11,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const resultTitle = document.getElementById('resultTitle');
     const resultMessage = document.getElementById('resultMessage');
     const sentimentIcon = document.getElementById('sentimentIcon');
-    const confidenceFill = document.getElementById('confidenceFill');
-    const confidenceValue = document.getElementById('confidenceValue');
-    const confidenceBarContainer = document.getElementById('confidenceBarContainer');
 
     // Update character counter
     tweetInput.addEventListener('input', function() {
@@ -56,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await response.json();
 
             if (data.success) {
-                displayResult(data.sentiment, data.confidence, data.message);
+                displayResult(data.sentiment, data.message);
             } else {
                 showError(data.error || 'An error occurred during prediction.');
             }
@@ -72,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Display result function
-    function displayResult(sentiment, confidence, message) {
+    function displayResult(sentiment, message) {
         // Reset classes
         resultContent.className = 'result-content';
         
@@ -80,35 +77,19 @@ document.addEventListener('DOMContentLoaded', function() {
         if (sentiment === 'positive') {
             resultContent.classList.add('positive-result');
             resultTitle.textContent = 'Positive Sentiment!';
-            resultMessage.textContent = message;
+            resultMessage.textContent = 'This tweet expresses a positive sentiment.';
             sentimentIcon.innerHTML = '😊';
         } else if (sentiment === 'negative') {
             resultContent.classList.add('negative-result');
             resultTitle.textContent = 'Negative Sentiment';
-            resultMessage.textContent = message;
+            resultMessage.textContent = 'This tweet expresses a negative sentiment.';
             sentimentIcon.innerHTML = '😞';
         } else {
             resultContent.classList.add('neutral-result');
             resultTitle.textContent = 'Neutral Sentiment';
-            resultMessage.textContent = message;
+            resultMessage.textContent = 'This tweet expresses a neutral sentiment.';
             sentimentIcon.innerHTML = '😐';
         }
-
-        // Update confidence bar
-        const confidencePercent = Math.round(confidence * 100);
-        confidenceValue.textContent = `${confidencePercent}%`;
-        
-        // For confidence bar, map negative to 0-50% and positive to 50-100%
-        let barWidth;
-        if (sentiment === 'positive') {
-            // Map 0.5-1.0 to 50-100%
-            barWidth = 50 + (confidence * 50);
-        } else {
-            // Map 0.5-1.0 to 50-0% for negative (mirror)
-            barWidth = 50 - ((1 - confidence) * 50);
-        }
-        
-        confidenceFill.style.width = `${barWidth}%`;
 
         // Show result container
         resultContainer.style.display = 'block';
@@ -124,7 +105,6 @@ document.addEventListener('DOMContentLoaded', function() {
         resultTitle.textContent = 'Error';
         resultMessage.textContent = message;
         sentimentIcon.innerHTML = '❌';
-        confidenceBarContainer.style.display = 'none';
         resultContainer.style.display = 'block';
         
         // Scroll to results

@@ -37,9 +37,7 @@ def predict():
         # Return the prediction result
         return jsonify({
             'success': True,
-            'sentiment': sentiment,
-            'confidence': float(confidence),
-            'message': f'The sentiment of the tweet is {sentiment} with {confidence:.2f} confidence'
+            'sentiment': sentiment
         })
         
     except Exception as e:
