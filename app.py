@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, jsonify
 from config import Config
 from sentiment_predictor import predictor
 import nltk
-import os
+nltk.download('stopwords')
 
 app = Flask(__name__)
 app.config.from_object(Config)
